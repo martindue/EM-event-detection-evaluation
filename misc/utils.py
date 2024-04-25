@@ -227,6 +227,7 @@ def plot_job(
 
     # plot
     fig = plot_matching(matcher, events, plot_kwargs, match_plot_kwargs)
+    input("Press enter to close the interactive plot.")
 
     # save
     _save = (spath is not None, odir is not None)
@@ -234,7 +235,7 @@ def plot_job(
         sdir, sname = split_path(spath)
         _label = valid_fname(matcher_label, "-")
         sname = "-".join(filter(None, (sname, _label)))
-        sdir = os.path.join(odir, "match-plots", sdir)
+        sdir = os.path.join(odir, "match-plots")
         mkpath(sdir)
 
         fig.savefig(os.path.join(sdir, f"{sname}.eps"))
@@ -346,7 +347,6 @@ class ScarfPlot(object):
 def match_plot(
     events_input, evt_gt=None, evt_pr=None, col_match="match", plot_kwargs={}
 ):
-
     events = events_input.copy()
     ax = plot_kwargs.get("ax", plt.gca())
     ids = np.array(plot_kwargs.get("ids", (0, 1)))
@@ -358,8 +358,8 @@ def match_plot(
         evt_gt = evt_pr = events
 
     # select matches to plot
-    mask_gt = [np.ones(len(evt_gt), dtype=np.bool)]
-    mask_pr = [np.ones(len(evt_pr), dtype=np.bool)]
+    mask_gt = [np.ones(len(evt_gt), dtype=bool)]
+    mask_pr = [np.ones(len(evt_pr), dtype=bool)]
     _query = [f"{col_match}>0"]
     labels_gt, labels_pr = plot_kwargs.get("labels", ([], []))
 

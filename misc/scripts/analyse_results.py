@@ -95,7 +95,6 @@ def calc_nld_corr(result_df, label=None):
     cols_sample = cols.str.contains("sample")
     result_accum = []
     for col_nld, cols_data in zip(cols_nld, (cols[~cols_sample], cols[cols_sample])):
-
         result = [
             [c1, c2, *stats.linregress(*_result_df[[c1, c2]].values.T)]
             for c1, c2 in itertools.product([col_nld], cols_data)

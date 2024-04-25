@@ -23,7 +23,7 @@ def cohen_kappa_score(c, zero_division=None):
     sum1 = np.sum(c, axis=1)
     expected = np.outer(sum0, sum1) / np.sum(sum0)
 
-    w_mat = np.ones([n_classes, n_classes], dtype=np.int)
+    w_mat = np.ones([n_classes, n_classes], dtype=int)
     w_mat.flat[:: n_classes + 1] = 0
 
     _denom = np.sum(w_mat * expected)
@@ -36,13 +36,13 @@ def matthews_corrcoef(c, zero_division=None):
     """Compute the Matthews correlation coefficient (MCC). Adapted from sklearn implementation to handle division by 0
     https://github.com/scikit-learn/scikit-learn/blob/fd237278e/sklearn/metrics/_classification.py#L764
     """
-    t_sum = c.sum(axis=1, dtype=np.float64)
-    p_sum = c.sum(axis=0, dtype=np.float64)
-    n_correct = np.trace(c, dtype=np.float64)
+    t_sum = c.sum(axis=1, dtype=float)
+    p_sum = c.sum(axis=0, dtype=float)
+    n_correct = np.trace(c, dtype=float)
     n_samples = p_sum.sum()
     cov_ytyp = n_correct * n_samples - np.dot(t_sum, p_sum)
-    cov_ypyp = n_samples ** 2 - np.dot(p_sum, p_sum)
-    cov_ytyt = n_samples ** 2 - np.dot(t_sum, t_sum)
+    cov_ypyp = n_samples**2 - np.dot(p_sum, p_sum)
+    cov_ytyt = n_samples**2 - np.dot(t_sum, t_sum)
 
     _denom = cov_ytyt * cov_ypyp
     mcc = zero_division if _denom == 0 else cov_ytyp / np.sqrt(_denom)

@@ -187,7 +187,7 @@ def multiclass_eval(
         meta = {"eval": _meta, "event": "all"}
 
         # handle undefined events
-        mask_remove = np.zeros(len(output), dtype=np.bool)
+        mask_remove = np.zeros(len(output), dtype=bool)
         if _strategy in ["ignore_unmatched_undef", "ignore_undef"]:
             _mask = get_filter_mask(output, UU_FILTER)
             mask_remove = np.logical_or(mask_remove, _mask)
@@ -213,7 +213,6 @@ def multiclass_eval(
                     if np.all(_uresult):
                         uresult = bcolors("Pass", "OKGREEN")
                     else:
-
                         uresult = bcolors("Fail", "FAIL")
                         _fail_idx = np.where(~_uresult.all(axis=0))[0]
                         print(_fail_idx)

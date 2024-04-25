@@ -95,7 +95,7 @@ def overlap(evt_gt, evt_pr, input_events, **kwargs):
     match_idx = _solve_match_conflicts(_events, evt_gt, evt_pr)
 
     # match mask
-    mask_match = np.zeros(len(events), dtype=np.bool)
+    mask_match = np.zeros(len(events), dtype=bool)
     mask_match[match_idx] = True
     events["match"] = mask_match
 
@@ -147,7 +147,7 @@ def earliest_overlap(evt_gt, evt_pr, input_events, backward=False, **kwargs):
     )
     match_idx = _solve_match_conflicts(_events, evt_gt, evt_pr)
 
-    mask_match = np.zeros(len(events), dtype=np.bool)
+    mask_match = np.zeros(len(events), dtype=bool)
     mask_match[match_idx] = True
     events["match"] = mask_match
 
@@ -166,7 +166,7 @@ def maximum_overlap(evt_gt, evt_pr, input_events, **kwargs):
     )
     match_idx = _solve_match_conflicts(_events, evt_gt, evt_pr)
 
-    mask_match = np.zeros(len(events), dtype=np.bool)
+    mask_match = np.zeros(len(events), dtype=bool)
     mask_match[match_idx] = True
     events["match"] = mask_match
 
@@ -194,8 +194,8 @@ def maximum_iou(evt_gt, evt_pr, input_events, **kwargs):
     mask_match = (events["IoU"] > 0.5).values  # ensures 1-to-1 match
     _gt_idx = events.loc[mask_match, "gt_idx"]
     _pr_idx = events.loc[mask_match, "pr_idx"]
-    mask_evt_gt = np.zeros(len(evt_gt), dtype=np.bool)
-    mask_evt_pr = np.zeros(len(evt_pr), dtype=np.bool)
+    mask_evt_gt = np.zeros(len(evt_gt), dtype=bool)
+    mask_evt_pr = np.zeros(len(evt_pr), dtype=bool)
     mask_evt_gt[_gt_idx] = True
     mask_evt_pr[_pr_idx] = True
 
@@ -214,7 +214,7 @@ def maximum_iou(evt_gt, evt_pr, input_events, **kwargs):
     # _events = events[mask].sort_values(['IoU', 'gt_idx', 'pr_idx'],
     #                                    ascending=[False, True, True])
     # match_idx = solve_match_conflicts(_events, evt_gt, evt_pr)
-    # mask_match = np.zeros(len(events), dtype=np.bool)
+    # mask_match = np.zeros(len(events), dtype=bool)
 
     mask_match[match_idx] = True
     events["match"] = mask_match
@@ -226,9 +226,9 @@ def _solve_match_conflicts(events, evt_gt, evt_pr, mask_evt_gt=None, mask_evt_pr
     """Makes all matches one-to-one"""
     match_idx = []
     if mask_evt_gt is None:
-        mask_evt_gt = np.zeros(len(evt_gt), dtype=np.bool)
+        mask_evt_gt = np.zeros(len(evt_gt), dtype=bool)
     if mask_evt_pr is None:
-        mask_evt_pr = np.zeros(len(evt_pr), dtype=np.bool)
+        mask_evt_pr = np.zeros(len(evt_pr), dtype=bool)
 
     ag = attrgetter("gt_idx", "pr_idx", "Index")
     for evt in events.itertuples():
