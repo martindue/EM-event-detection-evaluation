@@ -319,12 +319,8 @@ if indv_plots:
         "fname",
     ]
     results_aggr_event = results_part.groupby(_aggr_cols, as_index=False).mean()
-    results_aggr_event.sort_values(
-        by="metric", key=lambda x: x.map(mapper), inplace=True
-    )
-    plot_per_alg(
-        results_aggr_event, save=save, suffix="binary_metrics", colors=metric_colors
-    )
+    results_aggr_event.sort_values(by="metric", key=lambda x: x.map(mapper), inplace=True)
+    plot_per_alg(results_aggr_event, save=save, suffix="binary_metrics", colors=metric_colors)
 
 # per event plots
 results_part = results_avg.query(_filter)
@@ -335,9 +331,7 @@ plot_per_event(results_aggr, _sname, suffix="binary_metrics", colors=metric_colo
 _aggr_cols = ["alg_label", "matcher_label", "metric_label", "matcher", "metric"]
 results_aggr_event = results_aggr.groupby(_aggr_cols, as_index=False).mean()
 results_aggr_event.sort_values(by="metric", key=lambda x: x.map(mapper), inplace=True)
-plot_aggr(
-    results_aggr_event, sname=_sname, suffix="binary_metrics", colors=metric_colors
-)
+plot_aggr(results_aggr_event, sname=_sname, suffix="binary_metrics", colors=metric_colors)
 
 ##
 # NLD correlation; binary setting, all metrics

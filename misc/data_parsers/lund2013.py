@@ -88,9 +88,7 @@ def _parse_lund2013(fpath):
     status = np.any(status, axis=0)
 
     # cat data
-    etdata = pd.DataFrame(
-        {"t": timestamps, "x": x, "y": y, "status": ~status, "evt": evt}
-    )
+    etdata = pd.DataFrame({"t": timestamps, "x": x, "y": y, "status": ~status, "evt": evt})
 
     # map events to our scheme
     etdata.replace({"evt": LUND2013_EVENT_MAPPING}, inplace=True)

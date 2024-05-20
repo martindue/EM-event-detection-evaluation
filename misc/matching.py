@@ -26,9 +26,7 @@ def majority_voting(evt_gt, evt_pr, input_events, **kwargs):
 
     pr = utils.evt_unfold(evt_pr["evt"], evt_pr["dur"])
     ag = attrgetter("s", "e")
-    majority_count = [
-        Counter(pr[slice(*ag(r))]) for r in evt_gt[["s", "e"]].itertuples()
-    ]
+    majority_count = [Counter(pr[slice(*ag(r))]) for r in evt_gt[["s", "e"]].itertuples()]
     majority = [c.most_common(1) for c in majority_count]
     majority = np.array(majority).squeeze(axis=1)
     majority_event, majority_count = zip(*majority[events["gt_idx"]])
@@ -38,9 +36,7 @@ def majority_voting(evt_gt, evt_pr, input_events, **kwargs):
     evt_gt_dur = evt_gt["dur"].values[events["gt_idx"]]
     events["majority_proportion"] = np.array(majority_count) / evt_gt_dur
 
-    mask_match = (events["pr"] == events["majority"]) & (
-        events["majority_proportion"] > 0.5
-    )
+    mask_match = (events["pr"] == events["majority"]) & (events["majority_proportion"] > 0.5)
     events["match"] = mask_match
 
     if not kwargs.get("plot-mode", False):
@@ -61,9 +57,7 @@ def plurality_voting(evt_gt, evt_pr, input_events, **kwargs):
 
     pr = utils.evt_unfold(evt_pr["evt"], evt_pr["dur"])
     ag = attrgetter("s", "e")
-    majority_count = [
-        Counter(pr[slice(*ag(r))]) for r in evt_gt[["s", "e"]].itertuples()
-    ]
+    majority_count = [Counter(pr[slice(*ag(r))]) for r in evt_gt[["s", "e"]].itertuples()]
     majority = np.array([c.most_common(1)[0][0] for c in majority_count])
     events["majority"] = majority[events["gt_idx"]]
     mask_match = events["pr"] == events["majority"]
@@ -102,12 +96,8 @@ def overlap(evt_gt, evt_pr, input_events, **kwargs):
     if kwargs.get("one-match-only", False):
         # find unmatched events that are part of a merge or fragmentation
         mask_rm = np.logical_and(_match, ~mask_match)
-        gt_idx_rm = set(events.loc[mask_rm, "gt_idx"]) - set(
-            events.loc[mask_match, "gt_idx"]
-        )
-        pr_idx_rm = set(events.loc[mask_rm, "pr_idx"]) - set(
-            events.loc[mask_match, "pr_idx"]
-        )
+        gt_idx_rm = set(events.loc[mask_rm, "gt_idx"]) - set(events.loc[mask_match, "gt_idx"])
+        pr_idx_rm = set(events.loc[mask_rm, "pr_idx"]) - set(events.loc[mask_match, "pr_idx"])
 
         # set these events to -1
         gt_mask_rm = events["gt_idx"].isin(gt_idx_rm)
@@ -161,9 +151,7 @@ def maximum_overlap(evt_gt, evt_pr, input_events, **kwargs):
     Behavior research methods, 51(2), 840-864.
     """
     events = input_events.copy()
-    _events = events.sort_values(
-        ["It", "gt_idx", "pr_idx"], ascending=[False, True, True]
-    )
+    _events = events.sort_values(["It", "gt_idx", "pr_idx"], ascending=[False, True, True])
     match_idx = _solve_match_conflicts(_events, evt_gt, evt_pr)
 
     mask_match = np.zeros(len(events), dtype=bool)
@@ -205,9 +193,7 @@ def maximum_iou(evt_gt, evt_pr, input_events, **kwargs):
         ["IoU", "gt_idx", "pr_idx"], ascending=[False, True, True]
     )
     # solve match conflicts
-    match_idx = _solve_match_conflicts(
-        _events, evt_gt, evt_pr, mask_evt_gt, mask_evt_pr
-    )
+    match_idx = _solve_match_conflicts(_events, evt_gt, evt_pr, mask_evt_gt, mask_evt_pr)
 
     # simple version; takes longer
     # mask = events['IoU'] > iou_threshold
@@ -295,12 +281,8 @@ class EventMatcher(object):
         pr_idx = events["pr_idx"]
 
         # timestamp based intersection
-        _s = map(
-            lambda x: max(x), zip(evt_gt.loc[gt_idx, "st"], evt_pr.loc[pr_idx, "st"])
-        )
-        _e = map(
-            lambda x: min(x), zip(evt_gt.loc[gt_idx, "et"], evt_pr.loc[pr_idx, "et"])
-        )
+        _s = map(lambda x: max(x), zip(evt_gt.loc[gt_idx, "st"], evt_pr.loc[pr_idx, "st"]))
+        _e = map(lambda x: min(x), zip(evt_gt.loc[gt_idx, "et"], evt_pr.loc[pr_idx, "et"]))
         st, et, it = zip(*map(lambda s, e: (s, e, e - s), _s, _e))
         events["It"] = it
         events["st"] = st

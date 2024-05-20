@@ -22,9 +22,7 @@ def get_arguments():
     parser.add_argument(
         "-job", type=str, default=None, required=True, help="JSON job definition file"
     )
-    parser.add_argument(
-        "--output", type=str, default="results", help="Output directory"
-    )
+    parser.add_argument("--output", type=str, default="results", help="Output directory")
     parser.add_argument(
         "--plot",
         action="store_true",
@@ -63,9 +61,7 @@ if __name__ == "__main__":
         files = utils.get_file_list(job, root)
         matchers = job.get("matchers", {})
         event_map, event_labels = utils.get_event_map(job, event_map_default)
-        multiclass_strategy = job.get(
-            "multiclass_strategy", multiclass_strategy_default
-        )
+        multiclass_strategy = job.get("multiclass_strategy", multiclass_strategy_default)
         binary_strategy = job.get("binary_strategy", binary_strategy_default)
         job_label = job.get("label", None)
 
@@ -107,14 +103,11 @@ if __name__ == "__main__":
                     )
                     # add plot mode indicator
                     _plot_mode = {"plot-mode": True}
-                    kwargs = [
-                        utils.merge_dicts([_kwargs, _plot_mode]) for _kwargs in kwargs
-                    ]
+                    kwargs = [utils.merge_dicts([_kwargs, _plot_mode]) for _kwargs in kwargs]
 
                     # run matching
                     _match_result = [
-                        event_matcher.run_matching(matcher, **_kwargs)
-                        for _kwargs in kwargs
+                        event_matcher.run_matching(matcher, **_kwargs) for _kwargs in kwargs
                     ]
                     _, events = zip(*_match_result)
 

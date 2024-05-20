@@ -26,9 +26,7 @@ def parse_egofix(root, **kwargs):
     print(f"Parsing {dataset_name} from {data_dir}...")
 
     files = [
-        os.path.join(_root, _dir)
-        for _root, _dirs, _ in os.walk(data_dir)
-        for _dir in _dirs
+        os.path.join(_root, _dir) for _root, _dirs, _ in os.walk(data_dir) for _dir in _dirs
     ]
     data_accum = []
     for fpath in files:

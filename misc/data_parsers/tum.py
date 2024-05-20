@@ -252,8 +252,7 @@ class TUMParser(object):
             TUMParser.dataset_param_mapping, [dataset_name, "expert"]
         )
         self.coder_params = {
-            coder: {"dir": "ground_truth", "col": coder, "suffix": None}
-            for coder in coders
+            coder: {"dir": "ground_truth", "col": coder, "suffix": None} for coder in coders
         }
 
     def __call__(self, root, **kwargs):
@@ -263,9 +262,7 @@ class TUMParser(object):
         coder = kwargs.get("coder", "expert")
         params = self.alg_params if coder == "alg" else self.coder_params
 
-        print(
-            f"Parsing {dataset_name} ({coder}) from {data_dir}. This might take a while..."
-        )
+        print(f"Parsing {dataset_name} ({coder}) from {data_dir}. This might take a while...")
         data_accum = []
         for fpath in tqdm(files):
             fdir, fname = utils.split_path(fpath)

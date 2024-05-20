@@ -57,9 +57,7 @@ def get_arguments():
     parser.add_argument(
         "--output", type=str, default="results/etdata", help="Output directory"
     )
-    parser.add_argument(
-        "--plot", action="store_true", default=False, help="Plot trials"
-    )
+    parser.add_argument("--plot", action="store_true", default=False, help="Plot trials")
     return parser.parse_args()
 
 
@@ -113,9 +111,7 @@ for etdata, spath in tqdm(data):
         # ax[0].set_ylim(0, 1980)
         _title = ", ".join([f"{k}: {v}" for k, v in _data_stats.items()])
         ax[0].set_title(_title, fontsize="medium")
-        ax[0].legend(
-            loc="lower left", bbox_to_anchor=(0.05, 1.0), frameon=False, ncol=5
-        )
+        ax[0].legend(loc="lower left", bbox_to_anchor=(0.05, 1.0), frameon=False, ncol=5)
 
         evt = utils.aggr_events_df(etdata["evt"])
         f = utils.interp(range(len(etdata)), etdata["t"])

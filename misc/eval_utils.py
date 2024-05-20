@@ -179,7 +179,7 @@ def multiclass_eval(
     _mask = output == -1
     output[_mask] = reserved
     _labels = [reserved, *labels] if not (reserved in labels) else labels
-    assert all(np.in1d(np.unique(output), _labels))
+    assert all(np.in1d(np.unique(output), _labels)),"The output contains labels that are not in the labels list."
 
     result_accum = []
     for _strategy in strategy:
@@ -229,9 +229,7 @@ def multiclass_eval(
     return result_accum
 
 
-def binary_eval(
-    event_matcher, matcher, matching_kwargs, labels, strategy, unittest=None
-):
+def binary_eval(event_matcher, matcher, matching_kwargs, labels, strategy, unittest=None):
     """Binary evaluation"""
     data_gt = event_matcher.data_gt
     data_pr = event_matcher.data_pr
@@ -246,9 +244,7 @@ def binary_eval(
         # calc additional scores
         result_aux = {"nld": calc_nld(event_matcher_bin, matcher)}
 
-        output_bin, events_bin = event_matcher_bin.run_matching(
-            matcher, **matching_kwargs
-        )
+        output_bin, events_bin = event_matcher_bin.run_matching(matcher, **matching_kwargs)
         eval_result_bin = _binary_eval(output_bin, strategy, matcher)
 
         for result, _binary_strategy in eval_result_bin:

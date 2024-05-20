@@ -238,9 +238,7 @@ def main():
         data_pr = pd.read_csv(os.path.join(root, f"{dataset}_test", f"{fname}.csv"))
 
         event_matcher = matching.EventMatcher(gt=data_gt, pr=data_pr, mode="raw")
-        events = elc_tp_matching(
-            event_matcher.evt_gt, event_matcher.evt_pr, ws=10 / 300.0
-        )
+        events = elc_tp_matching(event_matcher.evt_gt, event_matcher.evt_pr, ws=10 / 300.0)
 
         # analyse data from matlab implementation
         fpath_elc_mat = os.path.join(

@@ -70,9 +70,7 @@ def between_matches(matches):
     return idx
 
 
-def edec_no_event_label(
-    err, seg_idx, mask_match, mask_one_match_both, ground_truth, dev
-):
+def edec_no_event_label(err, seg_idx, mask_match, mask_one_match_both, ground_truth, dev):
     """
     Helper function for EDEC event scoring
     """
@@ -86,9 +84,7 @@ def edec_no_event_label(
     event_idx = seg_idx[np.all(mask_no_label, axis=0)]
     if dev:
         # preserves o and u in no label events
-        err[event_idx] = [
-            "" if len(label) == 1 else label[1:] for label in err[event_idx]
-        ]
+        err[event_idx] = ["" if len(label) == 1 else label[1:] for label in err[event_idx]]
     else:
         err[event_idx] = ""
 
@@ -279,9 +275,7 @@ def run_edec_examples(data_gt, data_pr):
     print("SETs for positive classes (P) vs. NULL\n", cm)
 
     it = itertools.product(range(4), repeat=2)
-    n_frames = [
-        _events.query("seg_gt==@gt and seg_pr==@pr")["I"].sum() for gt, pr in it
-    ]
+    n_frames = [_events.query("seg_gt==@gt and seg_pr==@pr")["I"].sum() for gt, pr in it]
     n_frames = np.reshape(n_frames, (4, 4), order="F")
     print("Counts of segment errors and corresponding number of frames\n", n_frames)
 

@@ -40,9 +40,7 @@ def get_file_list(job, root):
     fpaths_pr = [fpath.replace(path_gt, path_pr) for fpath in fpaths_gt]
 
     # check if prediction files exist
-    fpaths = [
-        (_gt, _pr) for _gt, _pr in zip(fpaths_gt, fpaths_pr) if os.path.exists(_pr)
-    ]
+    fpaths = [(_gt, _pr) for _gt, _pr in zip(fpaths_gt, fpaths_pr) if os.path.exists(_pr)]
     n_gt, n_pr = len(fpaths_gt), len(fpaths)
     if not (n_gt == n_pr):
         print(f"{n_pr} prediction files exist out of {n_gt}")
@@ -297,9 +295,7 @@ def plot_matching(matcher, events, kwargs, match_plot_kwargs=None):
         if match_plot_kwargs is None:
             match_plot_kwargs = [{} for _ in range(len(events))]
         match_plot_kwargs = (
-            match_plot_kwargs
-            if isinstance(match_plot_kwargs, list)
-            else [match_plot_kwargs]
+            match_plot_kwargs if isinstance(match_plot_kwargs, list) else [match_plot_kwargs]
         )
         for _events, _plot_kwargs in zip(events, match_plot_kwargs):
             plot_kwargs = {"ax": ax[-1], "ids": (0, 1), "enum": True}
@@ -344,9 +340,7 @@ class ScarfPlot(object):
         self.n += 1
 
 
-def match_plot(
-    events_input, evt_gt=None, evt_pr=None, col_match="match", plot_kwargs={}
-):
+def match_plot(events_input, evt_gt=None, evt_pr=None, col_match="match", plot_kwargs={}):
     events = events_input.copy()
     ax = plot_kwargs.get("ax", plt.gca())
     ids = np.array(plot_kwargs.get("ids", (0, 1)))
@@ -443,9 +437,7 @@ def plot_metrics_vs_matchers(
     palette=None,
 ):
     _matchers = set(df["matcher"])
-    _order = [
-        matcher_map.get(_matcher) for _matcher in matcher_map if _matcher in _matchers
-    ]
+    _order = [matcher_map.get(_matcher) for _matcher in matcher_map if _matcher in _matchers]
 
     # plot results
     sns.catplot(
@@ -603,4 +595,4 @@ def seq2chr(seq):
 
 
 def str2int(s):
-    return int(s) if s.isnumeric() else s
+    return int(s) if isinstance(s, int) or (isinstance(s, str) and s.isnumeric()) else s
